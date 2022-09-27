@@ -28,12 +28,12 @@
 
     <session-config>
         <!-- Timeout of inactivity in minutes -->
-        <session-timeout>15</session-timeout>
+        <session-timeout>1</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
             <secure>true</secure>
             <!-- Cookie lifetime in seconds -->
-            <max-age>900</max-age>
+            <max-age>0</max-age>
         </cookie-config>
     </session-config>
 

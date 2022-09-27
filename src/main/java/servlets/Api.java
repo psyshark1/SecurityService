@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.WeakReference;
 import java.sql.SQLException;
 
 @WebServlet(name = "Api", urlPatterns = "/v1/api")
@@ -44,6 +46,11 @@ public class Api extends HttpServlet {
                     requestData.setUnixTime(decode228[0]);
                     requestData.setAccID(decode228[3]);
                     requestData.setRobotID(decode228[2]);
+
+                    ReferenceQueue<String[]> queue = new ReferenceQueue<>();
+                    WeakReference<String[]> weakRef = new WeakReference<>(decode228, queue);
+                    decode228 = null;
+                    weakRef.clear();
 
                     if (requestData.getAccID() != 0 && requestData.getRobotID() != 0) {
 
