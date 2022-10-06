@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.sql.SQLException;
@@ -31,7 +32,6 @@ public class Api extends HttpServlet {
         assert badIP != null;
 
         if (badIP){
-            //response.addHeader("X-YandexUID","Bad IP");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN,"Forbidden by IP");
             WriteMsg(response,"Forbidden by IP");
             return;
@@ -65,14 +65,12 @@ public class Api extends HttpServlet {
                                 responseData.setLogin(AutorityData[0]);
                                 responseData.setPass(AutorityData[1]);
                             } catch (SQLException s) {
-                                s.printStackTrace();
                                 response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "SQL Exception");
-                                WriteMsg(response, s.getMessage() + " SQL Exception");
+                                WriteMsg(response, PrintException(s) + " SQL Exception");
                                 return;
                             } catch (ClassNotFoundException throwables) {
-                                throwables.printStackTrace();
                                 response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE, "ClassNotFound Exception");
-                                WriteMsg(response, throwables.toString() + " ClassNotFound Exception");
+                                WriteMsg(response, PrintException(throwables) + " ClassNotFound Exception");
                                 return;
                             }
 
@@ -87,19 +85,23 @@ public class Api extends HttpServlet {
                 }
             }
         }
-        //response.sendError(HttpServletResponse.SC_BAD_REQUEST,"Бэд реквест, епта!");
+
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST,"Bad Request");
         WriteMsg(response,"Bad Request");
-        //response.addHeader("X-YandexUID","header!!");
-        //RequestDispatcher reqD = request.getRequestDispatcher("pages/api.jsp");
-        //reqD.forward(request, response);
+
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED,"No POST");
         WriteMsg(response,"No POST");
+    }
+
+    private String PrintException(Exception e) {
+        StringWriter err = new StringWriter();
+        e.printStackTrace(new PrintWriter(err));
+        return err.toString();
     }
 
     private void WriteMsg(HttpServletResponse response, String text) throws IOException {

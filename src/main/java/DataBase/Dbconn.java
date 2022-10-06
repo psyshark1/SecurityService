@@ -13,11 +13,9 @@ public class Dbconn {
     private static PreparedStatement statmt = null;
     private ResultSet rst;
 
-    public Dbconn() {
-        //Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-    }
+    private Dbconn() { }
 
-    public static Dbconn getInstance() throws ClassNotFoundException {
+    public static Dbconn getInstance() {
         if (instance == null) {
             synchronized (Dbconn.class){
                 if (instance == null) {
@@ -39,7 +37,6 @@ public class Dbconn {
             ctx = new InitialContext();
             DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/SSC-Data");
             conn = ds.getConnection();
-            //conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
         } catch (NamingException e) {
             e.printStackTrace();
         } catch (SQLException e) {
@@ -86,8 +83,6 @@ public class Dbconn {
         }
 
         this.closeRecordSet();
-        //this.closeStatement();
-        //this.closeConnection();
         return result;
     }
 

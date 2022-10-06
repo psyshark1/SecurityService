@@ -11,17 +11,8 @@ public class RequestData {
     private String PersonellNumber;
     private int RobotID;
     private int AccID;
-    //private final Dbconn dbf;
 
-    public RequestData(){
-
-        /*this.UserName = data[1];
-        this.PCName = data[4];
-        this.PersonellNumber = Integer.parseInt(data[5]);
-        this.RobotID = Integer.parseInt(data[2]);
-        this.AccID = Integer.parseInt(data[3]);
-        dbf = Dbconn.getInstance();*/
-    }
+    public RequestData(){ }
 
     public void setUnixTime (String unixTime){
         try {
