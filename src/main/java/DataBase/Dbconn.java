@@ -58,7 +58,7 @@ public class Dbconn {
         if (conn == null) {
             this.setConn();
         }else if (conn.isClosed()){
-            conn = null
+            conn = null;
             this.setConn();
         }
         this.setStatmt(
