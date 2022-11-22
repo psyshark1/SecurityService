@@ -1,21 +1,28 @@
 package DataBase;
 
+import utils.Props;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-import java.sql.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Dbconn {
 
     private static volatile Dbconn instance;
     private static Connection conn = null;
-    private static PreparedStatement statmt = null;
+    private PreparedStatement statmt = null;
+    private final Props props = Props.getInstance();
     private ResultSet rst;
 
-    private Dbconn() { }
+    private Dbconn() throws IOException { }
 
-    public static Dbconn getInstance() {
+    public static Dbconn getInstance() throws IOException {
         if (instance == null) {
             synchronized (Dbconn.class){
                 if (instance == null) {
@@ -51,11 +58,11 @@ public class Dbconn {
         if (conn == null) {
             this.setConn();
         }else if (conn.isClosed()){
-            conn = null;
+            conn = null
             this.setConn();
         }
         this.setStatmt(
-                "SELECT ta.login,ta.pass FROM app_Robots r " +
+                "SELECT ta.login,ta.pass FROM " + props.getDbName() + " r " +
                 "LEFT JOIN app_BindApp b1 ON r.idRob = b1.id1 AND b1.typeBind = 'RobPar' AND b1.activeFlag = 1 " +
                 "LEFT JOIN app_RobotsParameters rp ON b1.id2 = rp.idPar AND rp.activeFlag = 1 " +
                 "LEFT JOIN app_BindApp b2 ON r.idRob = b2.id1 AND b2.typeBind = 'RobVer' AND b2.activeFlag = 1 " +

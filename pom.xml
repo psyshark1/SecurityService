@@ -19,8 +19,39 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>webRes</directory>
+                        </resource>
+                        <resource>
+                            <targetPath>WEB-INF/lib</targetPath>
+                            <filtering>false</filtering>
+                            <directory>${project.basedir}/lib</directory>
+                        </resource>
+                        <resource>
+                            <targetPath>WEB-INF/config</targetPath>
+                            <filtering>false</filtering>
+                            <directory>${project.basedir}/config</directory>
+                        </resource>
+                        <resource>
+                            <targetPath>META-INF</targetPath>
+                            <filtering>false</filtering>
+                            <directory>${project.basedir}/context</directory>
+                        </resource>
+                    </webResources>
+                </configuration>
+
+            </plugin>
+
         </plugins>
     </build>
+
     <packaging>war</packaging>
 
     <properties>
@@ -51,6 +82,16 @@
         <artifactId>javaee-api</artifactId>
         <version>6.0</version>
         <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+        <groupId>com.microsoft.sqlserver</groupId>
+        <artifactId>mssql-jdbc</artifactId>
+        <version>9.2.0</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/mssql-jdbc-9.2.0.jre8.jar</systemPath>
+        <type>jar</type>
+        <optional>false</optional>
     </dependency>
 
     </dependencies>
